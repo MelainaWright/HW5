@@ -15,7 +15,7 @@ fisheries_summary = function(fishprice, fishnumber, graph="true") {
     if(colName!="species"){
       maxCount = max(fishnumber[[colName]])
       maxFish = fishnumber$species[fishnumber[[colName]] == maxCount]
-      cat("Location: ", colName,"\t maxFish: ", maxFish, "\n")
+
     }
   }
 
@@ -30,7 +30,6 @@ fisheries_summary = function(fishprice, fishnumber, graph="true") {
         amount = fishnumber[[colName]][fishnumber$species==species]
         currentFishRevenue = currentFishRevenue + price*amount
       }
-      cat("Location: ", colName, "\t currentFishRevenue: ", currentFishRevenue, "\n")
       totalRevenueByLocation = c(totalRevenueByLocation,currentFishRevenue)
     }
   }
@@ -41,8 +40,8 @@ fisheries_summary = function(fishprice, fishnumber, graph="true") {
 
 
   # * total fisheries sum
-  TotalFisheriesSum = sum(TotalRevenueByLocationDF$totalRevenueByLocation)
-  TotalFisheriesSumDF = c(Location="Total", TotalFisheriesSum, stringsAsFactors = FALSE)
+  TotalFisheriesSum=sum(TotalRevenueByLocationDF$totalRevenueByLocation)
+  TotalFisheriesSumDF = c(Location="Total", TotalFisheriesSum=TotalFisheriesSum, stringsAsFactors = FALSE)
 
   RevenueDF = rbind(TotalRevenueByLocationDF, TotalFisheriesSumDF)
 
@@ -56,5 +55,7 @@ fisheries_summary = function(fishprice, fishnumber, graph="true") {
     RevenueGraph
 
   }
+
+return(RevenueDF)
 
 }#end of function

@@ -31,15 +31,13 @@ fishprice <- read.csv("fishprice.csv")
 use_data(fishprice, pkg="HW5Package")
 
 
-
-
 #put documentation at top of R file into a help file
 library(roxygen2)
 
 
 #documentation with data is not stored with data. it goes into the R folder (aka subdirectory)
 #make new script in R folder with proper format
-#"PbData" is supposed to not be commented out,needs to be same name as datafile
+#"DataName" is supposed to not be commented out,needs to be same name as datafile
 
 
 setwd("C:/Users/melai/Documents/BrenSpring2017/ESM262/HW5Package")
@@ -48,6 +46,23 @@ setwd("C:/Users/melai/Documents/BrenSpring2017/ESM262/HW5Package")
 
 fisheries_summary(fishprice=fishprice, fishnumber=fishnumber, graph="true") #test basic funciton of package
 
+
+##########################################################
+#testing package
+
+library(testthat)
+
+#test based on what you expect the function should equal
+#create new folder called tests first
+#test_dir("tests") #doesn't work. saves in test subdirectory of the package, run this line to see if messed up the function when edited it, make test subdirectory has same level as R subdirectory
+
+
+#create an R file in the tests folder and then do the test_file to see what the result is
+test_file("tests/IfAddingWorks.R")
+
+test_file("tests/IfPbWorks.R")
+
+test_file("tests/If_fisheries_summary_works.R") #won't work this way. have to run manually, line by line in the test code because the way the fisheries_summary saves things and how a mock data frame saves things is different
 
 
 #########################################################
@@ -60,59 +75,3 @@ fisheries_summary(fishprice=fishprice, fishnumber=fishnumber, graph="true") #tes
 # this will create an *.gz file that you can distribute
 #
 # the user will then install this package in order to have access to functions and data in your package
-
-
-##########################################################
-#testing package
-
-library(testthat)
-
-#test based on what you expect the function should equal
-
-
-#the example function:
-surge_to_damage = function(surge, surge.min, base, K) {
-  flood = ifelse(surge > surge.min, surg-surge.min, 0)
-  damage = K*flood+base
-  return(damage)
-}
-
-
-#simple test example:
-test_that("nameoftest", {
-
-  expect_that(nameoffunctionandfollowingarevariablevalues(surge=0,
-
-                                                          surge.min=900,base=40,K=20),
-
-              equals(0)) })
-
-
-#another example:
-test_that("spring.summary.works" ,
-          {clim.data = as.data.frame(cbind(month=c(1:4), day=rep(1, times=4), year=rep(1,times=4),
-                                           rain=rep(0, times=4), tmax=c(2,2,1,1), tmin=rep(0, times=4)))
-
-          expect_that(spring.summary(clim.data, spring.months=4)$mean.springP, equals(0))
-          expect_that(spring.summary(clim.data, spring.months=4)$mean.springT, equals(0.5))
-          expect_that(spring.summary(clim.data, spring.months=1)$mean.springT, equals(1))
-          expect_true(spring.summary(clim.data, spring.months=c(1:4))$coldest.spring > 2)
-          })
-
-#create new folder called tests first
-test_dir("tests") #saves in test subdirectory of the package, run this line to see if messed up the function when edited it, make test subdirectory has same level as R subdirectory
-
-
-#trying it out myself:
-
-IfAddingWorks <- test_that("IfAddingWorks" ,
-                           {
-
-                             expect_that(Adding(x=4, y=6), equals(10))
-                           })
-
-
-test_file("tests/IfAddingWorks.R")
-
-
-#for fish catch, do data and function and documentation and tests that can run, fish market function with documentation as a package
